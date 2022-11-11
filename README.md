@@ -16,4 +16,9 @@ The .bxsf file needs some modifications as the requirement of the next step. Her
 You may also refer to SKEAF README to see why the requirements are necessary. 
 
 ## Quantum oscillation frequencies by SKEAF
-The implementation principle is well illustrated in the SKEAF paper (https://arxiv.org/pdf/0803.1895.pdf), In principle, you can download the original version of SKEAF (http://www.democritos.it/pipermail/xcrysden/2012-July/001234.html), but I have made some changes to the source for an easier usage.
+The implementation principle is well illustrated in the SKEAF paper (https://arxiv.org/pdf/0803.1895.pdf). In principle, you can download the original version of SKEAF (http://www.democritos.it/pipermail/xcrysden/2012-July/001234.html), but I have made some changes to the source for an easier usage. Please download my updated SKEAF version. 
+(1) Compile the SKEAF codes by `gfortran skeaf_v1p3p0_r149.F90 -o skeaf` and `gfortran ELK_exciting_BXSFconverter_v04.F90 -o bxsfconverter`. You will have two binaries compiled named `skeaf` and `bxsfconverter`. Move these two binaries to your working directory, or add the their location to `$PATH` in `.bashrc`
+(2) Run `bxsfconverter`, make the following choices: band.bxsf(filename), n(not on a periodic grid), n(not having factor 2*Pi), e(energy unit is eV), n(not divided exponent), n(not switched sign), converted.bxsf(output filename)
+Note if you don't use my updated version, you will only have two choices for energy unit: hartree and rydberg.
+As a result, you will see a file with name `converted.bxsf`, and we will use it for skeaf calculation
+(3) Run SKEAF to by directly typing `skeaf` in your terminal.
