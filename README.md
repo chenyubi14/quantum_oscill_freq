@@ -21,21 +21,22 @@ You may also refer to SKEAF README to see why the requirements are necessary.
 ## Quantum oscillation frequencies by SKEAF
 The implementation principle is well illustrated in the SKEAF paper (https://arxiv.org/pdf/0803.1895.pdf). In principle, you can download the original version of SKEAF (http://www.democritos.it/pipermail/xcrysden/2012-July/001234.html), but I have made some changes to the source for an easier usage. Please download my updated SKEAF version. 
 
-### compile
+### Compile
 Compile the SKEAF codes by `gfortran skeaf_v1p3p0_r149.F90 -o skeaf` and `gfortran ELK_exciting_BXSFconverter_v04.F90 -o bxsfconverter`. You will have two binaries compiled named `skeaf` and `bxsfconverter`. Move these two binaries to your working directory, or add the their location to `$PATH` in `.bashrc`
 
-### format and unit change
+### Format and unit change
 Run `bxsfconverter`. It will give you a set of questions. Make the following choices: band.bxsf(filename), n(not on a periodic grid), n(not having factor 2*Pi), e(energy unit is eV), n(not divided exponent), n(not switched sign), converted.bxsf(output filename)
 Note if you don't use my updated version, you will only have two choices for energy unit: hartree and rydberg.
 As a result, you will see a file with name `converted.bxsf`, and we will use it for skeaf calculation.
 
-### run skeaf
+### Run skeaf
 Run SKEAF to by directly typing `skeaf` in your terminal. You can play with its input and output to get some idea.
 Note, if you don't use my updated package, the length unit of the original code is Bohr (1 Bohr=0.53 Angstrom). The VASP output is by default Angstrom.
 
-### automation
+### Automation
 Working flow to run massive SKEAF calculations
 Some automation codes. (Will be uploaded later)
+The rotational angles is not properly implemented in the original SKEAF code. It changes angles linearly.
 
 ### Fermi surface plot
 Of course, you can use xcrysden to visualize and plot the Fermi surface. I have this file `fermi_surface_plot.py` for implementation in python, which is easier for further changes.
