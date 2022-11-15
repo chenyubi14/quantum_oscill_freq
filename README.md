@@ -42,7 +42,7 @@ The rotational angles is not properly implemented in the original SKEAF code. It
 ### Fermi surface plot
 Of course, you can use xcrysden to visualize and plot the Fermi surface. I have this file `fermi_surface_plot.py` for implementation in python, which is easier for further changes.
 
-`fermi_surface_plot.py` can visualize the fermi surface by python. This file is developed based on the `fs.py` file in QijingZheng/VASP_FermiSurface. I made additional changes to this file because I encountered two practical issues.
+`fermi_surface_plot.py` can visualize the fermi surface by python. This file is developed based on the `fs.py` file in [QijingZheng/VASP_FermiSurface](https://github.com/QijingZheng/VASP_FermiSurface). I made additional changes to this file because I encountered two practical issues.
 
 The first issue: the symmetry tag should be on for using `fs.py`, which is not the case for spin-orbit coupling calculations with `ISYM=-1`.
 
