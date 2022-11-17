@@ -40,15 +40,17 @@ Some automation codes. (Will be uploaded later)
 The rotational angles is not properly implemented in the original SKEAF code. It changes angles linearly.
 
 ### Fermi surface plot
-Of course, you can use xcrysden to visualize and plot the Fermi surface. I have this file `fermi_surface_plot.py` for implementation in python, which is easier for further changes.
+Of course, you can use xcrysden to visualize and plot the Fermi surface. I have other files for visualization in python, which is easier for publication-level graphs and further changes.
 
-`fermi_surface_plot.py` can visualize the fermi surface by python. This file is developed based on the `fs.py` file in [QijingZheng/VASP_FermiSurface](https://github.com/QijingZheng/VASP_FermiSurface). I made additional changes to this file because I encountered two practical issues.
+`fermi_surface_plot_VASP.py` can visualize the fermi surface by taking VASP inputs (EIGENVAL, KPOINTS, POSCAR). This file is developed based on the `fs.py` file in [QijingZheng/VASP_FermiSurface](https://github.com/QijingZheng/VASP_FermiSurface). I made additional changes to this file because I encountered two practical issues.
 
 The first issue: the symmetry tag should be on for using `fs.py`, which is not the case for spin-orbit coupling calculations with `ISYM=-1`.
 
 The second issue: an implementation error which is not working for `ISPIN=2` (spin-polarized calculations). It works perfectly with the default VASP tag `ISPIN=1`.
 
-If you replaced `fermi_surface_plot.py` with `fs.py`, the above two issues are resolved. Please refer to QijingZheng/VASP_FermiSurface for the tutorial of using this `fermi_surface_plot.py` file.
+If you replaced `fermi_surface_plot_VASP.py` with `fs.py`, the above two issues are resolved. Please use `python *.py --help` for usage hints. Or you may go to [QijingZheng/VASP_FermiSurface](https://github.com/QijingZheng/VASP_FermiSurface) for the tutorial.
+
+Note, `fermi_surface_plot_VASP.py` is only for VASP inputs. Therefore, the other files `fermi_surface_plot_bxsf.py` and `bxsf_parser.py` are designed for more general cases, where you only need to input a .bxsf file. Please run `python fermi_surface_plot_bxsf.py *.bxsf`. This function only supports matplotlib, where I have removed other visualization tools like Mayavi in the orginal code.
 
 ### Extremal orbital visualization
 Visualization of extremal Fermi surface orbitals
