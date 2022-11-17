@@ -301,7 +301,7 @@ class ebands3d(object):
         for ispin in range(self.nspin):
             uc_tmp = []
             # bz_tmp = []
-            for iband in self.fermi_xbands[ispin]:
+            for iband in self.fermi_xbands[ispin]: # the band that crosses with Fermi level
                 # the band energies of the k-points within primitive cell
                 etmp = self.ir_ebands[ispin, self.grid_to_ir_map, iband]
                 etmp.shape = list(reversed(self.kmesh))         # the first axis of etmp corresponds to the last cell direction
@@ -389,11 +389,11 @@ class ebands3d(object):
             out.write("END_BLOCK_BANDGRID_3D\n")
 
     def show_fermi_surf(self, cell='bz', plot='mpl',
-                      savefig='fs.png',
                       cmap='Spectral'):
         '''
         Plotting the Fermi surface within the BZ using matplotlib.
         '''
+        savefig='fs_vasp_%.3f.png' % self.efermi 
 
         try:
             # from skimage.measure import marching_cubes_lewiner as marching_cubes
@@ -452,10 +452,18 @@ class ebands3d(object):
             basis_vector_clrs = ['r', 'g', 'b']
             basis_vector_labs = ['x', 'y', 'z']
             for ii in range(3):
-                ax.plot([0, bcell[ii, 0]], [0, bcell[ii, 1]], [0, bcell[ii, 2]],
+                max_b = np.max([b1,b2,b3]) * 0.6
+                bi = bcell[ii]
+                bi = bi/np.linalg.norm(bi) * max_b
+                ax.plot([0, bi[0] ], [0, bi[1] ], [0, bi[2]],
                         color=basis_vector_clrs[ii], lw=1.5)
-                ax.text(bcell[ii, 0], bcell[ii, 1], bcell[ii, 2],
+                ax.text(bi[0], bi[1], bi[2],
                         basis_vector_labs[ii])
+                
+                #ax.plot([0, bcell[ii, 0]], [0, bcell[ii, 1]], [0, bcell[ii, 2]],
+                #        color=basis_vector_clrs[ii], lw=1.5)
+                #ax.text(bcell[ii, 0], bcell[ii, 1], bcell[ii, 2],
+                #        basis_vector_labs[ii])
             ############################################################
             # Plot the Fermi Surface.
             # Marching-cubes algorithm is used to find out the isosurface.
@@ -523,9 +531,13 @@ class ebands3d(object):
             # ax.add_collection3d(art)
             ############################################################
             if cell == 'bz':
-                ax.set_xlim(-b1, b1)
-                ax.set_ylim(-b2, b2)
-                ax.set_zlim(-b3, b3)
+                max_b = np.max([b1,b2,b3]) * 0.6
+                ax.set_xlim(-max_b,max_b)
+                ax.set_ylim(-max_b,max_b)
+                ax.set_zlim(-max_b,max_b)
+                #ax.set_xlim(-b1, b1)
+                #ax.set_ylim(-b2, b2)
+                #ax.set_zlim(-b3, b3)
             else:
                 ax.set_xlim(0, b1)
                 ax.set_ylim(0, b2)
