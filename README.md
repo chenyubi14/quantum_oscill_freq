@@ -50,7 +50,11 @@ The second issue: an implementation error which is not working for `ISPIN=2` (sp
 
 If you replaced `fermi_surface_plot_VASP.py` with `fs.py`, the above two issues are resolved. Please use `python *.py --help` for usage hints. Or you may go to [QijingZheng/VASP_FermiSurface](https://github.com/QijingZheng/VASP_FermiSurface) for the tutorial.
 
-Note, `fermi_surface_plot_VASP.py` is only for VASP inputs. Therefore, the other files `fermi_surface_plot_bxsf.py` and `bxsf_parser.py` are designed for more general cases, where you only need to input a .bxsf file. Please run `python fermi_surface_plot_bxsf.py *.bxsf`. This function only supports matplotlib, where I have removed other visualization tools like Mayavi in the orginal code.
+Note, `fermi_surface_plot_VASP.py` is only for VASP inputs. Therefore, the other files `fermi_surface_plot_bxsf.py` and `bxsf_parser.py` are designed for more general cases, where you only need to input a .bxsf file. Please run 
+```bash
+python fermi_surface_plot_bxsf.py *.bxsf
+``` 
+This function only supports matplotlib, where I have removed other visualization tools like Mayavi in the orginal code.
 
 ### Extremal orbital visualization
 Visualization of extremal Fermi surface orbitals
