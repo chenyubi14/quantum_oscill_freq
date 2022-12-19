@@ -62,3 +62,7 @@ This function only supports matplotlib, where I have removed other visualization
 ### Extremal orbital visualization
 Visualization of extremal Fermi surface orbitals
 Working on it. It will be on soon.
+
+### Fermi surface on a denser k-grid
+`fermi_5_write_bxsf.py` and `fermi_6_fourier_interp.py` can use Fourier interpolation to generate a .bxsf file with denser k-grid.
+Or, you can follow the tutorial of [wannier90](http://www.wannier.org/support/) to get a denser .bxsf file by the wannier interpolation.
