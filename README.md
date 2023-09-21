@@ -43,7 +43,7 @@ You will have two binaries compiled named `skeaf` and `bxsfconverter`.
 Move these two binaries to your working directory, or add the their location to `$PATH` in `.bashrc`
 
 ### Format and unit change
-Run `bxsfconverter`. It will give you a set of questions. Make the following choices: band.bxsf(filename from Xcrysden), n(not on a periodic grid), n(not having factor 2*Pi), e(energy unit is eV), n(not divided exponent), n(not switched sign), converted.bxsf(output filename)
+Run `bxsfconverter`. It will give you a set of questions. Make the following choices: `band.bxsf`(filename from Xcrysden), `n`(not on a periodic grid), `n`(not having factor 2*Pi), `e`(energy unit is eV), `n`(not divided exponent), `n`(not switched sign), `converted.bxsf`(new filename)
 
 As a result, you will see a file with name `converted.bxsf`, and we will use it for skeaf calculation.
 
