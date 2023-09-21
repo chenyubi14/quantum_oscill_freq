@@ -1,5 +1,6 @@
-# Theorical background
-For theoretical background, chapter 14 of Solid State Physics by Ashcroft/Mermin is a good reference.
+# Theoretical background
+For theoretical background, chapter 14 of Solid State Physics by Ashcroft/Mermin is a good reference to understand why oscillations happen.
+
 This repository contains a set of tools I found to calculate quantum oscillation frequencies for magnetic susceptibility (de HAAS-van ALPHEN effect), conductivity (Shubnikov-de Haas effect), and magnetorestriction, etc.
 
 The quantum oscillation frequencies are proportional to extremal Fermi surface areas (Onsage relation, eq 14.15 in Ashcroft/Mermin), so the key is to calculate Fermi surface, and find extremal area perpendicular to applied magnetic field.
@@ -7,11 +8,15 @@ The quantum oscillation frequencies are proportional to extremal Fermi surface a
 I have found a set of useful online tools and developped a working flow. I also made additional changes to adjust for more needs.
 
 ## prerequesites
-* pip install scikit-image
+```
+pip install scikit-image
+```
 
 # Working flow
 ## DFT calculation to obtain Fermi surface
-First run a VASP job by a dense K-grid for Fermi surface calculation, and use c2x (https://www.c2x.org.uk/fermi/vasp.html) to get a fermi_surface.bxsf file. The .bxsf file stores the information of Fermi surface by saving band energies at the dense K-point grid.
+First run a VASP job on a dense K-grid for Fermi surface calculation, and use c2x (https://www.c2x.org.uk/fermi/vasp.html) to get a fermi_surface.bxsf file. The .bxsf file stores the information of Fermi surface by saving band energies at the dense K-point grid.
+
+I have found several other codes, like vaspkit, that can also produce .bxsf file. However, they do not use symmetry of the k grid to reduce resource cost.
 
 ## File format change
 The .bxsf file needs some modifications as the requirement of the next step. Here are a complete set of notes for this step. 
@@ -22,20 +27,39 @@ The .bxsf file needs some modifications as the requirement of the next step. Her
 You may also refer to SKEAF README to see why the requirements are necessary. 
 
 ## Quantum oscillation frequencies by SKEAF
-The implementation principle is well illustrated in the SKEAF paper (https://arxiv.org/pdf/0803.1895.pdf). In principle, you can download the original version of SKEAF (http://www.democritos.it/pipermail/xcrysden/2012-July/001234.html), but I have made some changes to the source for an easier usage. Please download my updated SKEAF version. 
+The implementation principle is well illustrated in the SKEAF paper (https://arxiv.org/pdf/0803.1895.pdf). In principle, you can download the original version of SKEAF (http://www.democritos.it/pipermail/xcrysden/2012-July/001234.html), but I have made some changes to the source for an easier usage. Please download my updated SKEAF version `skeaf_v2_update4vasp.tar.gz`.
+
+The original version of SKEAF contains many .F90 files: the format change file `ELK_exciting_BXSFconverter_v04.F90`, `skeaf_v1p3p0_r149.F90`, and a bunch example files. I have editted two of them `ELK_exciting_BXSFconverter_v04.F90` and `skeaf_v1p3p0_r149.F90`. 
+
 
 ### Compile
-Compile the SKEAF codes by `gfortran skeaf_v1p3p0_r149.F90 -o skeaf` and `gfortran ELK_exciting_BXSFconverter_v04.F90 -o bxsfconverter`. You will have two binaries compiled named `skeaf` and `bxsfconverter`. Move these two binaries to your working directory, or add the their location to `$PATH` in `.bashrc`
+Compile the SKEAF codes by 
+```bash
+gfortran skeaf_v1p3p0_r149.F90 -o skeaf
+gfortran ELK_exciting_BXSFconverter_v04.F90 -o bxsfconverter
+```
+
+You will have two binaries compiled named `skeaf` and `bxsfconverter`. 
+Move these two binaries to your working directory, or add the their location to `$PATH` in `.bashrc`
 
 ### Format and unit change
-Run `bxsfconverter`. It will give you a set of questions. Make the following choices: band.bxsf(filename), n(not on a periodic grid), n(not having factor 2*Pi), e(energy unit is eV), n(not divided exponent), n(not switched sign), converted.bxsf(output filename)
+Run `bxsfconverter`. It will give you a set of questions. Make the following choices: band.bxsf(filename from Xcrysden), n(not on a periodic grid), n(not having factor 2*Pi), e(energy unit is eV), n(not divided exponent), n(not switched sign), converted.bxsf(output filename)
 
-Note if you don't use my updated version, you will only have two choices for energy unit: hartree and rydberg.
 As a result, you will see a file with name `converted.bxsf`, and we will use it for skeaf calculation.
+
+Note if you don't use my updated file `ELK_exciting_BXSFconverter_v04.F90`, you will not have the choice of energy unit eV.
+* The .bxsf file energy is in the unit of eV, but the original converter file only have two choices for energy unit: hartree and rydberg. The edit is made in the updated `ELK_exciting_BXSFconverter_v04.F90` file.
+
+* The orginal code has a limitation on a size of k grid in .bxsf file: smaller than 100 k points in a, b, and c directions. I have changed the limitation to a larger k grid: smaller than 150 k points in all directions.
+
 
 ### Run skeaf
 Run SKEAF to by directly typing `skeaf` in your terminal. You can play with its input and output to get some idea.
-Note, if you don't use my updated package, the length unit of the original code is Bohr (1 Bohr=0.53 Angstrom). The VASP output is by default Angstrom.
+
+Note, if you don't use my updated package, the length unit of the original code assumes Bohr (1 Bohr=0.53 Angstrom). 
+* The .bxsf file length is in the unit of angstrom (The VASP output is by default Angstrom), original code assumed Bohr unit. I have updated `skeaf_v1p3p0_r149.F90` file to assume angstrom unit.
+
+
 
 ### Automation
 Working flow to run massive SKEAF calculations
